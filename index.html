@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Noteplace</title>
+      <script type="module" crossorigin src="/assets/index-cd3bc3a4.js"></script>
+      <link rel="stylesheet" href="/assets/index-3b3914f3.css">
+    </head>
+
+    <body onload="document.body.classList.add('loaded')">
+        <div id="app">
+            <div class="-main-wrapper">
+                <div class="-main-sidebar">
+                    <div class="-main-sidebar-logo">
+                        <div class="-main-sidebar-logo-text">NOTEPLACE&nbsp;&nbsp;</div>
+                        <a href="/">
+                        <div class="-main-sidebar-logo-piece-wrapper">
+                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 500.000000 500.000000"
+                            preserveAspectRatio="xMidYMid meet" 
+                            class="piece1 pieces">    
+                                <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+                                stroke="none">
+                                <path d="M0 1722 l0 -1722 475 0 475 0 0 563 0 562 558 -563 557 -563 688 3
+                                687 3 -1720 1720 -1720 1720 0 -1723z"/>
+                                </g>
+                            </svg>
+                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 500.000000 500.000000"
+                            preserveAspectRatio="xMidYMid meet"
+                            class="piece2 pieces">
+                                <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+                                stroke="none">
+                                <path d="M2 4661 l3 -340 2153 -2160 2154 -2161 344 0 344 0 0 341 0 341
+                                -2161 2156 -2162 2157 -339 3 -338 2 2 -339z"/>
+                                </g>
+                            </svg>
+                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 500.000000 500.000000"
+                                preserveAspectRatio="xMidYMid meet"
+                                class="piece3 pieces">
+                                <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+                                stroke="none">
+                                <path d="M3270 3275 c949 -949 1726 -1725 1727 -1725 2 0 3 776 3 1725 l0
+                                1725 -475 0 -475 0 0 -567 0 -568 -561 568 -561 567 -691 0 -692 0 1725 -1725z"/>
+                                </g>
+                            </svg>
+                        </div></a>
+                    </div>
+                    <hr class="customhr">
+                    <div class="-toolbar">
+                        <div class="-main-sidebar-toolbar-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                            <div class="-infobox-wrapper">
+                                ⏶
+                                <div class="-infobox">
+                                    Search notes
+                                </div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><path d="m20.71 19.29-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8 7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 11a6 6 0 1 1 6 6 6 6 0 0 1-6-6z" data-name="search"></path></g></svg>
+                        </div>
+                        <div class="-main-sidebar-toolbar-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                            <div class="-infobox-wrapper">
+                                ⏶
+                                <div class="-infobox">
+                                    Select multiple
+                                </div>
+                            </div>
+                            <svg width="2.2rem" height="2.2rem" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <g id="Edit / Select_Multiple">
+                                <path id="Vector" d="M3 9V19.4C3 19.9601 3 20.2399 3.10899 20.4538C3.20487 20.642 3.35774 20.7952 3.5459 20.8911C3.7596 21 4.0395 21 4.59846 21H15.0001M17 8L13 12L11 10M7 13.8002V6.2002C7 5.08009 7 4.51962 7.21799 4.0918C7.40973 3.71547 7.71547 3.40973 8.0918 3.21799C8.51962 3 9.08009 3 10.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07969 21.0002 6.19978L21.0002 13.7998C21.0002 14.9199 21.0002 15.48 20.7822 15.9078C20.5905 16.2841 20.2842 16.5905 19.9079 16.7822C19.4805 17 18.9215 17 17.8036 17H10.1969C9.07899 17 8.5192 17 8.0918 16.7822C7.71547 16.5905 7.40973 16.2842 7.21799 15.9079C7 15.4801 7 14.9203 7 13.8002Z" stroke="var(--main-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="-main-sidebar-toolbar-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                            onclick="createNewNote()">
+                            <div class="-infobox-wrapper">
+                                ⏶
+                                <div class="-infobox">
+                                    Add new note
+                                </div>
+                            </div>
+                            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"/>
+                            </svg>
+                        </div>
+                        <div class="-main-sidebar-toolbar-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                            <div class="-infobox-wrapper">
+                                ⏶
+                                <div class="-infobox">
+                                    Mystery
+                                </div>
+                            </div>
+                            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M18 5a1 1 0 100-2H2a1 1 0 000 2h16zm0 4a1 1 0 100-2H2a1 1 0 100 2h16zm1 3a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 5a1 1 0 100-2H2a1 1 0 100 2h16z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="-main-sidebar-notes">
+
+                    </div>
+                </div>
+                <div class="-resizer">
+                    <div class="-resizer-notch">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                        width="2rem" height="2rem" style="position:absolute;" viewBox="0 0 190.000000 190.000000"
+                        preserveAspectRatio="xMidYMid meet">
+
+                        <g transform="translate(0.000000,190.000000) scale(0.100000,-0.100000)"
+                        fill="var(--main-color)" stroke="none">
+                        <path d="M709 1801 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 43 -47 90 -90 90 -22 0 -41 -9 -61 -29z"/>
+                        <path d="M1029 1531 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 43 -47 90 -90 90 -22 0 -41 -9 -61 -29z"/>
+                        <path d="M709 1261 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 22 -9 41 -29 61 -40 39 -82 39 -122 0z"/>
+                        <path d="M1029 991 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 22 -9 41 -29 61 -40 39 -82 39 -122 0z"/>
+                        <path d="M709 721 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 22 -9 41 -29 61 -40 39 -82 39 -122 0z"/>
+                        <path d="M1029 451 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 43 -47 90 -90 90 -22 0 -41 -9 -61 -29z"/>
+                        <path d="M709 181 c-20 -20 -29 -39 -29 -61 0 -43 47 -90 90 -90 43 0 90 47
+                        90 90 0 43 -47 90 -90 90 -22 0 -41 -9 -61 -29z"/>
+                        </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="-main-note">
+                    <div class="-toolbar -toolbar2">
+                    </div>
+                </div>       
+            </div>
+        </div>
+        
+    </body>
+
+</html>
