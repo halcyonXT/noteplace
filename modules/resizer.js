@@ -5,12 +5,10 @@ let note = document.querySelector('.-main-note')
 let initialWidthSidebar
 let initialWidthNote 
 
-
 document.querySelector('.-resizer-notch').addEventListener('mousedown', function(e) {
     clientX = e.clientX
     initialWidthNote = note.clientWidth
     initialWidthSidebar = sidebar.clientWidth
-
     window.addEventListener('mousemove', mouseMoveHandle)
     window.addEventListener('mouseup', terminateHandle)
 })
@@ -25,4 +23,8 @@ const terminateHandle = (e) => {
     window.removeEventListener('mousemove', mouseMoveHandle)
     window.removeEventListener('mouseup', terminateHandle)
 }
+
+/* CARD DRAG BELOW */
+
+
 
