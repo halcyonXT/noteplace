@@ -1,4 +1,4 @@
-
+import Picker from 'vanilla-picker';
 window.renderSelectedNote = () => {
     let selected = allNotes.findIndex(el => el.selected)
     let display = document.querySelector('.-main-note')
@@ -8,17 +8,15 @@ window.renderSelectedNote = () => {
             editMode 
             ?
             `
+            <div class="-main-note-virtual"><p>${allNotes[selected].body}</p></div>
             <textarea
             oninput="updateSelectedNote(this, '${allNotes[selected].id}', 'body')"
             value="${allNotes[selected].body}"
             spellcheck="false"
-            class="-main-note-body-textarea">${allNotes[selected].body}
-            </textarea>
+            class="-main-note-body-textarea">${allNotes[selected].body}</textarea>
             `
             :
-            `<div class='-main-note-preview'>
-                ${allNotes[selected].bodyPreview}        
-            </div>`
+            `<div class='-main-note-preview'>${allNotes[selected].bodyPreview}</div>`
     } catch (ex) {}
 
     if (selected === -1) {
@@ -35,20 +33,26 @@ window.renderSelectedNote = () => {
                         placeholder="Note title"
                     ></input>
                 </div>
-                <div style="width:10%; height: 80%; border-radius: 0.3rem; display: flex; align-items: center; justify-content: flex-end">
+                <div style="width:25%; max-width: 25%; height: 80%; border-radius: 0.3rem; display: flex; align-items: center; justify-content: flex-end">
+                    <div style="text-align:right; font-size: 1.2rem; color: var(${editMode ? '--accent-color' : '--submain-color'}); margin-right: 0.5rem; margin-top: -0.4rem; width: max-content" class='k1'>
+                        <p style="font-size: 1rem" class='k2'>Mode:</p>
+                        <h4>${editMode ? 'EDIT' : 'PREVIEW'}</h4>
+                    </div>
                     <svg onclick="toggleEditMode()" style="user-select: none; cursor: pointer;"
                     fill="var(${editMode ? "--accent-color" : "--submain-color"})" width="2.2rem" height="2.2rem" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.7,5.2a1.024,1.024,0,0,1,0,1.448L18.074,9.276l-3.35-3.35L17.35,3.3a1.024,1.024,0,0,1,1.448,0Zm-4.166,5.614-3.35-3.35L4.675,15.975,3,21l5.025-1.675Z"/></svg>
                 </div>
             </div>
             <hr class="customhr">
             <div class="-toolbar -toolbar2">
-                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                onclick="insertTextMutation('**')">
                     ${getInfobox('Puts boldening ** tags around selected text')}
                     <svg viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 25.531v1.344c1.063-0.031 1.938-0.063 2.563-0.094 0.625 0 1.094-0.031 1.313-0.031 1.656-0.125 3.063-0.219 4.281-0.188l2.813 0.063c2.438 0 4.25-0.313 5.75-1 0.719-0.344 1.344-0.844 1.969-1.531 0.469-0.469 0.813-1.031 1.031-1.656 0.25-0.844 0.375-1.594 0.375-2.281 0-2.5-1.719-4.625-5.094-5.406 0.531-0.25 1.031-0.5 1.375-0.688s0.625-0.313 0.781-0.438c1.188-0.875 1.781-1.906 1.781-3.281 0-0.594-0.094-1.188-0.281-1.719-0.375-1.094-1.219-2-2.406-2.563-0.531-0.313-1.031-0.469-1.375-0.531-0.938-0.25-1.844-0.375-2.719-0.375h-1.094c-0.219 0-0.406 0-0.531-0.031h-0.5c-0.063 0-0.156 0-0.25 0.031h-0.625l-5.406 0.156-3.719 0.094 0.063 1.188c0.875 0.125 1.406 0.188 1.625 0.188 0.438 0 0.781 0.094 0.969 0.219 0.094 0 0.156 0.063 0.188 0.125 0.063 0.219 0.125 0.688 0.156 1.563 0.063 1.563 0.063 2.813 0.063 3.75 0.031 0.969 0.031 1.625 0.094 2v7.031c0 1.219-0.031 2.125-0.156 2.75-0.031 0.219-0.125 0.438-0.281 0.688-0.438 0.188-1 0.375-1.75 0.469-0.375 0.063-0.719 0.125-1 0.156zM7.719 14.281v-2.469c0.063-1.719 0-2.969-0.031-3.969-0.063-0.438-0.063-0.844-0.063-1.063 0.75-0.156 1.344-0.219 1.844-0.219 1.625 0 2.844 0.344 3.656 1.094 0.813 0.688 1.219 1.563 1.219 2.656 0 2.969-1.75 4.094-5.063 4.094-0.563 0-1.094-0.031-1.563-0.125zM7.719 20.406v-4.5c0.313-0.063 0.75-0.125 1.438-0.125 1.594-0.031 2.813 0.125 3.563 0.438 1.531 0.563 2.594 2.188 2.594 4.344 0 1.031-0.219 1.844-0.563 2.563-0.375 0.719-0.906 1.219-1.719 1.594-1.656 0.781-3.719 0.719-5.125 0.125-0.094-0.25-0.125-0.438-0.125-0.594z"></path>
                     </svg>
                 </div>
-                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                onclick="insertTextMutation('^^')">
                     ${getInfobox('Puts italic ^^ tags around selected text')}
                     <svg width="1.1rem" height="1.1rem" viewBox="0 0 48 48" enable-background="new 0 0 48 48" id="Layer_3" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <g>
@@ -56,7 +60,9 @@ window.renderSelectedNote = () => {
                         </g>
                     </svg>
                 </div>
-                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                <div class="-main-sidebar-toolbar2-button -button-animation" 
+                onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                onclick="insertTextMutation('__')">
                     ${getInfobox('Puts underline __ tags around selected text')}
                     <svg width="1.1rem" height="1.1rem" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                             viewBox="0 0 29.501 29.501"
@@ -74,7 +80,8 @@ window.renderSelectedNote = () => {
                     </g>
                     </svg>
                 </div>
-                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
+                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                onclick="insertTextMutation('--')">
                     ${getInfobox('Puts strikethrough -- tags around selected text')}
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <g>
@@ -94,8 +101,9 @@ window.renderSelectedNote = () => {
                         <path d="M0 0h16v4h-2V2H9v12h3v2H4v-2h3V2H2v2H0V2z" fill-rule="evenodd"/>
                     </svg>
                 </div>
-                <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
-                    ${getInfobox('Change font color of selected text')}
+                <div class="-main-sidebar-toolbar2-button -button-animation -color" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')"
+                onclick="handleColorChange()">
+                ${getInfobox('Change font color of selected text')}
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--gis" preserveAspectRatio="xMidYMid meet"><path d="M44.55 10.526C18.234 10.526 0 31.58 0 42.106s5.263 18.42 15.79 18.42c10.526 0 15.789 2.632 15.789 10.527c0 10.526 7.895 18.42 18.421 18.42c34.21 0 50-18.42 50-36.841c0-31.58-23.87-42.106-55.45-42.106zm-7.024 10.527a6.58 6.58 0 1 1 0 13.158a6.58 6.58 0 0 1 0-13.158zm21.053 0a6.58 6.58 0 1 1 0 13.158a6.58 6.58 0 0 1 0-13.158zm19.053 10.526a6.579 6.579 0 1 1 0 13.158a6.579 6.579 0 0 1 0-13.158zm-58.527 1.263a6.58 6.58 0 1 1 0 13.158a6.58 6.58 0 0 1 0-13.158zM54 63.158a7.895 7.895 0 0 1 7.895 7.895c0 4.36-5.535 7.894-9.895 7.894a7.895 7.895 0 0 1-7.895-7.894c0-4.36 5.535-7.895 9.895-7.895z"></path></svg>
                 </div>
                 <div class="-main-sidebar-toolbar2-button -button-animation" onmouseenter="toggleInfobox(this, 'enter')" onmouseleave="toggleInfobox(this, 'leave')">
@@ -115,5 +123,62 @@ window.renderSelectedNote = () => {
             </div>
         `
         selectedNoteId = allNotes[selected].id
+        processVirtualDisplay(allNotes[selected].body)
+        var parent = document.querySelector('.-color');
+        var picker = new Picker({
+            parent: parent,
+            color: 'var(--accent-color)',
+            cancelButton: true,
+        });
+
+        // You can do what you want with the chosen color using two callbacks: onChange and onDone.
+
+        picker.onDone = function(color) {
+            mutateColor(color.hex);
+        };
+
+        try {
+            let dragger = document.querySelector('.-drag-virtual')
+            let cardAt = []
+            let clientY = 0
+    
+            function moveArrayElement(arr, fromIndex, toIndex) {
+                const element = arr[fromIndex];
+                arr.splice(fromIndex, 1);
+                arr.splice(toIndex, 0, element);
+                return arr;
+              }
+            dragger.addEventListener('mousedown', function(e) {
+                console.log("INITIATE")
+                clientY = e.clientY
+                cardAt = []
+                for (let el of allNotes) {
+                    let rect = document.querySelectorAll(`[data-noteid='${el.id}']`)[0].getBoundingClientRect()
+                    cardAt.push((rect.top + rect.bottom) / 2)
+                }
+                window.addEventListener('mousemove', mouseMoveHandle)
+                window.addEventListener('mouseup', terminateHandle)
+            })
+
+            const mouseMoveHandle = (e) => {
+                clientY = e.clientY
+                console.log("HANDLED")
+                for (let i in cardAt) {
+                    if (clientY < cardAt[i]) {
+                        allNotes = moveArrayElement(allNotes, allNotes.findIndex(el => el.id == selectedNoteId), i)
+                        moveStarredToTop()
+                        renderNotes()
+                        break
+                    }
+                }
+            }
+
+            const terminateHandle = (e) => {
+                saveAllNotes()
+                renderSelectedNote()
+                window.removeEventListener('mousemove', mouseMoveHandle)
+                window.removeEventListener('mouseup', terminateHandle)
+            }
+        } catch(ex) {}
     }
 }

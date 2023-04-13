@@ -1,3 +1,4 @@
+
 /* GENERATOR FUNCTIONS */
 
 window.idGenerator = () => Math.trunc(Math.random() * 100000000000000).toString(32)
@@ -17,6 +18,7 @@ window.getCurrentDate = () => {
 
 
 /* NOTE STYLES */
+
 
 window.mouseEnterStyles = (e) => {
     if (e.dataset.noteid === selectedNoteId) {return}
@@ -45,7 +47,7 @@ window.mouseLeaveStyles = (e) => {
 
 window.sampleNote = (id) => ({
     title: "New title", 
-    body: "Beginning of a new note", 
+    body: "Beggining of a new note", 
     bodyPreview: "Beggining of a new note", 
     id: id, 
     selected: false, 
@@ -69,10 +71,82 @@ window.getInfobox = (string) => {
 
 /*************/
 
+/** SELECTION */
+const getSelectionIndex = (element) => {
+    return {
+        start: element.selectionStart,
+        end: element.selectionEnd
+    }
+}
+/*****/
+
 
 
 
 /* NOTE FUNCTIONS */
+
+window.handleColorChange = () => {
+}
+
+window.mutateColor = (color) => {
+    function addElementAtIndex(string, index, element) {
+        const start = string.slice(0, index), end = string.slice(index)
+        return start + element + end
+    }
+    try {
+        if (elementContainsSelection(document.querySelector('.-main-note-body'))) {
+            const newcolor = color.length == 9 ? color.slice(1,7) : color.slice(1)
+            const index = allNotes.findIndex(el => el.id == selectedNoteId), selection = getSelectionIndex(document.querySelector('.-main-note-body-textarea'))
+            allNotes[index].body = addElementAtIndex(allNotes[index].body, selection.start, `⎊${newcolor}`)
+            allNotes[index].body = addElementAtIndex(allNotes[index].body, selection.end + newcolor.length +1, `⎊`)
+            bodyProcessor({value: allNotes[index].body}, index)
+            renderSelectedNote()
+            reRenderNote(index)
+            saveAllNotes()
+        }
+    } catch(ex) {console.log(ex)}
+}
+
+window.insertTextMutation = (mutation) => {
+    function addElementAtIndex(string, index, element) {
+        const start = string.slice(0, index), end = string.slice(index)
+        return start + element + end
+    }
+    try {
+        if (elementContainsSelection(document.querySelector('.-main-note-body'))) {
+            const index = allNotes.findIndex(el => el.id == selectedNoteId), selection = getSelectionIndex(document.querySelector('.-main-note-body-textarea'))
+            allNotes[index].body = addElementAtIndex(allNotes[index].body, selection.start, mutation)
+            allNotes[index].body = addElementAtIndex(allNotes[index].body, selection.end + mutation.length, mutation)
+            bodyProcessor({value: allNotes[index].body}, index)
+            renderSelectedNote()
+            reRenderNote(index)
+            saveAllNotes()
+        }
+    } catch(ex) {}
+}
+
+window.elementContainsSelection = (el) => {
+    var sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+        for (var i = 0; i < sel.rangeCount; ++i) {
+            if (!el.contains(sel.getRangeAt(i).commonAncestorContainer)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+window.getSelectionText = () => {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
 
 window.moveStarredToTop = () => {
     let starred = [], nonstarred = []
@@ -127,10 +201,72 @@ window.updateSelectedNote = (e, id, key) => {
     let apply = e.value.replaceAll('<', '<​')
     allNotes[index][key] = `${apply}`
     if (key == 'body') {
+        processVirtualDisplay(apply)
         bodyProcessor(e, index)
     }
     reRenderNote(index)
     saveAllNotes()
+}
+
+window.isValidHex = (str) => {
+    // Check if string is exactly 6 characters long
+    if (str.length !== 6) {
+      return false;
+    }
+    // Check if string contains only hexadecimal characters
+    const hexChars = /^[0-9A-Fa-f]+$/;
+    if (!hexChars.test(str)) {
+      return false;
+    }
+    // If string passes both tests, it is a valid hex code
+    return true;
+  }
+window.processVirtualDisplay = (value) => {
+    try{
+        
+        document.querySelector('.-main-note-virtual').innerHTML = ''
+        let style = getComputedStyle(document.body)
+        let color = style.getPropertyValue('--accent-color')
+        let maincolor = style.getPropertyValue('--main-color')
+        //processing of value
+        const replaceEveryOtherClr = (str) => {
+            const regex = new RegExp(`(⎊.{6})`, 'g');
+            let count = 1;
+            return str.replace(regex, (match) => {
+              count++;
+              return count % 2 === 0 ? 
+              `<span style="color:${color}">${isValidHex(match.slice(1)) ? `${match[0]}</span><span style="color:#${match.slice(1)};text-shadow:#${match.slice(1)} 0px 0px 2px">${match.slice(1)}</span>` : `${match[0]}</span>${match.slice(1)}` }` : match;
+            });
+        }
+        const invSpan = `<span style="color:${color};filter:invert(1)">`
+        const colSpan = `<span style="color:${color}">`
+        const endSpan = `</span>`
+    
+        let string = value;
+
+        //add strikethrough
+        string = replaceEveryOther(string, '\\-\\-', invSpan + '--' + endSpan);
+        string = string.replaceAll('--', colSpan + '--' + endSpan)
+    
+        //add bold
+        string = replaceEveryOther(string, '\\*\\*', invSpan + '**' + endSpan);
+        string = string.replaceAll('**', colSpan + '**' + endSpan)
+    
+        //add italic
+        string = replaceEveryOther(string, '\\^\\^', invSpan + '^^' + endSpan);
+        string = string.replaceAll('^^', colSpan + '^^' + endSpan)
+    
+        //add underline
+        string = replaceEveryOther(string, '\\_\\_', invSpan + '__' + endSpan);
+        string = string.replaceAll('__', colSpan + '__' + endSpan)
+    
+        //add colors
+        //string = string.replaceAll('⎊', colSpan + '⎊' + endSpan)
+        string = replaceEveryOther(string, '⎊', invSpan + '⎊' + endSpan)
+        string = replaceEveryOtherClr(string)
+
+        document.querySelector('.-main-note-virtual').innerHTML = string
+    } catch (ex) {}
 }
 
 window.flushSelected = () => {for (let el of allNotes) {el.selected = false}}
@@ -143,6 +279,7 @@ window.selectNote = (target) => {
             el.selected = false
         } else el.selected = true
     }
+    editMode = false
     renderNotes(true)
     renderSelectedNote()
 }
@@ -151,6 +288,7 @@ window.selectNoteWithID = (id) => {
     lastSelectedNoteId = selectedNoteId
     flushSelected()
     allNotes[allNotes.findIndex(el => el.id == id)].selected = true
+    editMode = false
     renderNotes(true)
     renderSelectedNote()
 }

@@ -1,27 +1,30 @@
+window.replaceEveryOtherColor = (str) => {
+    const regex = new RegExp(`(⎊(?:(?!⎊).){0,6})`, 'g');
+    let count = 1;
+    return str.replace(regex, (match) => {
+      count++;
+      return count % 2 === 0 ? `<span style="color:#${isValidHex(match.slice(1)) ? match.slice(1) : 'FFFFFF'}">` : match;
+    });
+  }
+
+window.replaceEveryOther = (str, search, replace) => {
+    let count = 0;
+    return str.replace(new RegExp(search, 'g'), (match) => {
+      count++;
+      return count % 2 === 0 ? replace : match;
+    });
+}
 window.bodyProcessor = (e, index) => {
-    function replaceEveryOtherColor(str) {
-        const regex = new RegExp(`(⎊.{6})`, 'g');
-        let count = 1;
-        return str.replace(regex, (match) => {
-          count++;
-          return count % 2 === 0 ? `<span style="color:#${match.slice(1)}">` : match;
-        });
-      }
-
-    function replaceEveryOther(str, search, replace) {
-        let count = 0;
-        return str.replace(new RegExp(search, 'g'), (match) => {
-          count++;
-          return count % 2 === 0 ? replace : match;
-        });
-    }
-
     let string = e.value;
     //add newlines
     (function() {
         string = string.replaceAll('<', '<​')
         string = string.replaceAll('\n', '<br>')
     })();
+    //add colors
+    string = replaceEveryOtherColor(string)
+    //string = replaceEveryOther(string, '⎊', '</span>')
+    string = string.replaceAll('⎊', '</span>')
     
     //add bold
     string = replaceEveryOther(string, '\\*\\*', '</b>');
@@ -39,9 +42,6 @@ window.bodyProcessor = (e, index) => {
     string = replaceEveryOther(string, '\\-\\-', '</s>');
     string = string.replaceAll('--', '<s>')
 
-    //add colors
-    string = replaceEveryOtherColor(string)
-    string = string.replaceAll('⎊', '</span>')
 
     allNotes[index].bodyPreview = string
 }

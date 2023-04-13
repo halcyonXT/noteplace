@@ -1,9 +1,10 @@
-import './styles/main.css'
-import './modules/noteSelection'
-import './modules/renderNotes'
-import './modules/global'
-import './modules/resizer'
-import './modules/bodyProcessor'
+
+import './public/styles/main.css'
+import './public/modules/noteSelection'
+import './public/modules/renderNotes'
+import './public/modules/global'
+import './public/modules/resizer'
+import './public/modules/bodyProcessor'
 /*
 let body = 'Lorem ipsum dolor sit amet'
 
@@ -25,13 +26,25 @@ allNotes = [
 ]
 saveAllNotes()
 */
+
+
 for (let i in allNotes) {
     bodyProcessor({value: allNotes[i].body}, i)
 }
+/*
+document.querySelector('.-main-note-body-textarea').addEventListener('keydown', function(event) {
+    if (event.key === "Tab" || event.keyCode === 9) {
+        updateSelectedNote({value: `${}`})
+    }
+  });
+*/
+
 
 moveStarredToTop()
 renderNotes()
 renderSelectedNote()
+
+
 
 
 
