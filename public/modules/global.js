@@ -84,8 +84,48 @@ const getSelectionIndex = (element) => {
 
 
 /* NOTE FUNCTIONS */
+//🗚
+window.triggerAlarmPopup = (action) => {
+    if (action === "open") {
+        document.querySelector('.-alarm-popup').style.display = "flex"
+    } else {
+        document.querySelector('.-alarm-popup').style.display = "none"
+    }
+}
 
-window.handleColorChange = () => {
+window.timerKillswitch = (id, ranOut = false) => {
+    clearTimeout(window[`${id}timeout`])
+    clearInterval(window[`${id}timer`])
+    let index = allNotes.findIndex(el => el.id === id)
+    allNotes[index].alarm.set = false
+    allNotes[index].alarm.time = 0
+    reRenderNote(index)
+}
+
+window.triggerAlarm = (id) => {
+    let minutes = document.querySelector('.-alarm-minutes').value
+    let seconds = document.querySelector('.-alarm-seconds').value
+    let index = allNotes.findIndex(el => el.id === id)
+    allNotes[index].alarm.set = true
+    allNotes[index].alarm.time = Number(seconds) + (minutes * 60)
+    let mstime = (Number(seconds) + (minutes * 60)) * 1000
+    triggerAlarmPopup("close")
+    reRenderNote(index)
+
+    window[`${id}timer`] = setInterval(() => {
+        let ind = allNotes.findIndex(el => el.id == id)
+        allNotes[ind].alarm.time -= 1;
+        reRenderNoteTime(ind)
+    }, 1000)
+
+    window[`${id}timeout`] = setTimeout(() => {
+        timerKillswitch(id, true)
+    }, mstime)
+}
+
+
+window.handleFontSize = (size) => {
+    
 }
 
 window.mutateColor = (color) => {
@@ -164,6 +204,14 @@ window.reRenderNote = (index) => {
     target.children[index].innerHTML = string
 }
 
+window.reRenderNoteTime = (index) => {
+    let target = document.querySelector('.-main-sidebar-notes')
+    try{
+        target.children[index].querySelector('.-note-timer').innerHTML = 
+        `${(Math.floor(allNotes[index].alarm.time / 60)).toString().padStart(2, '0')}:${(allNotes[index].alarm.time % 60).toString().padStart(2, '0')}`   
+    } catch(ex) {}
+}
+
 window.saveAllNotes = () => {
     localStorage.setItem("allNotes", JSON.stringify(allNotes))
 }
@@ -221,6 +269,8 @@ window.isValidHex = (str) => {
     // If string passes both tests, it is a valid hex code
     return true;
   }
+
+
 window.processVirtualDisplay = (value) => {
     try{
         
@@ -238,9 +288,22 @@ window.processVirtualDisplay = (value) => {
               `<span style="color:${color}">${isValidHex(match.slice(1)) ? `${match[0]}</span><span style="color:#${match.slice(1)};text-shadow:#${match.slice(1)} 0px 0px 2px">${match.slice(1)}</span>` : `${match[0]}</span>${match.slice(1)}` }` : match;
             });
         }
+        
         const invSpan = `<span style="color:${color};filter:invert(1)">`
         const colSpan = `<span style="color:${color}">`
         const endSpan = `</span>`
+        
+        const replaceEveryOtherFS = (str) => {
+            function isNumeric(str) {
+                return !isNaN(str) && !isNaN(parseFloat(str));
+                }
+            const regex = new RegExp(`(▴(?:(?!▴).){0,2})`, 'g');
+            let count = 1;
+            return str.replace(regex, (match) => {
+                count++;
+                return count % 2 === 0 ? colSpan + match + endSpan : match;
+            });
+        }
     
         let string = value;
 
@@ -264,6 +327,10 @@ window.processVirtualDisplay = (value) => {
         //string = string.replaceAll('⎊', colSpan + '⎊' + endSpan)
         string = replaceEveryOther(string, '⎊', invSpan + '⎊' + endSpan)
         string = replaceEveryOtherClr(string)
+
+        //add fontsize
+        string = replaceEveryOther(string, '▴', invSpan + '▴' + endSpan)
+        string = replaceEveryOtherFS(string)
 
         document.querySelector('.-main-note-virtual').innerHTML = string
     } catch (ex) {}

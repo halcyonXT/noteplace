@@ -7,6 +7,18 @@ window.replaceEveryOtherColor = (str) => {
     });
   }
 
+  window.replaceEveryOtherFontsize = (str) => {
+    function isNumeric(str) {
+        return !isNaN(str) && !isNaN(parseFloat(str));
+      }
+    const regex = new RegExp(`(▴(?:(?!▴).){0,2})`, 'g');
+    let count = 1;
+    return str.replace(regex, (match) => {
+      count++;
+      return count % 2 === 0 ? `<span style="font-size:${isNumeric(match.slice(1)) ? `${match.slice(1)}px` : '1rem'}">` : match;
+    });
+  }
+
 window.replaceEveryOther = (str, search, replace) => {
     let count = 0;
     return str.replace(new RegExp(search, 'g'), (match) => {
@@ -37,10 +49,14 @@ window.bodyProcessor = (e, index) => {
     //add underline
     string = replaceEveryOther(string, '\\_\\_', '</u>');
     string = string.replaceAll('__', '<u>')
-
+//🗚
     //add strikethrough
     string = replaceEveryOther(string, '\\-\\-', '</s>');
     string = string.replaceAll('--', '<s>')
+
+    //add fontSize
+    string = replaceEveryOtherFontsize(string)
+    string = string.replaceAll('▴', '</span>')
 
 
     allNotes[index].bodyPreview = string

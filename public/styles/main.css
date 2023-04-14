@@ -11,6 +11,7 @@ body {
 }
 
 html {
+    transition-duration: 0s;
     font-size: 1.6vh;
 }
 
@@ -339,6 +340,7 @@ background-image: linear-gradient(
     align-items: center;
     transition-duration: 0.15s;
     user-select: none;
+    position: relative;
 }
 /*
 .-main-sidebar-toolbar2-button:nth-child(3) {
@@ -399,6 +401,7 @@ background-image: linear-gradient(
     display: grid;
     place-items: center;
     transition-duration: 0.15s;
+    position: relative;
 }
 
 .-main-sidebar-toolbar-button:hover {
@@ -415,6 +418,10 @@ background-image: linear-gradient(
     fill: var(--accent-color);
 }
 
+.-relative {
+    position: relative;
+}
+
 .-alarm:hover > svg > path {
     transition-duration: 0.1s;
     fill: var(--accent-color);
@@ -423,7 +430,66 @@ background-image: linear-gradient(
 
 .-alarm-popup {
     position: absolute;
+    right: 0%;
+    bottom: 0%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.3rem;
+    background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.5%;
+    z-index: 999;
+    display: none;
+}
 
+.-input {
+    background-color: var(--dark-main-color);
+    color:var(--accent-color);
+    border: 0;
+    border: 0.1rem solid var(--main-color);
+    height: 80%;
+    font-weight: bold;
+    outline: 0;
+}
+
+.-button {
+    transition-duration: 0.15s;
+    width: auto;
+    height: 73%;
+    border: 0;
+    background-color: var(--dark-main-color);
+    display: grid;
+    place-items: center;
+    color: var(--submain-color);
+    user-select: none;
+}
+
+.-button:hover {
+    color: var(--accent-color)
+}
+
+.-alarm-minutes {
+    border-top-left-radius: 0.3rem;
+    border-bottom-left-radius: 0.3rem;
+}
+
+
+.w {
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+}
+
+.-alarm-popup > .-button {
+    min-height: 73%;
+    width: 18%;
+    cursor: pointer;
+}
+
+.-alarm-popup > .-input {
+    min-height: 80%;
+    width: 28%;
 }
 
 
@@ -480,9 +546,9 @@ background-image: linear-gradient(
 
 .-main-note-body {
     position: relative;
-    height: 87%;
-    min-height: 87%; 
-    max-height: 87%;
+    height: 86%;
+    min-height: 86%; 
+    max-height: 86%;
     width: 100%;
 }
 
@@ -511,6 +577,7 @@ background-image: linear-gradient(
     word-wrap: break-word;
     overflow: hidden;
     white-space: pre-wrap;
+    overflow-y: auto;
 }
 
 
@@ -541,6 +608,7 @@ background-image: linear-gradient(
     overflow-wrap: break-word;
     overflow: hidden;
     white-space: pre-wrap;
+    overflow-y: auto;
 }
 
 .-main-note-virtual {
@@ -573,6 +641,7 @@ background-image: linear-gradient(
     white-space: pre-wrap;
     overflow-wrap: break-word;
     pointer-events: none;
+    overflow-y: auto;
 }
 
 .-main-note-virtual > span {
@@ -722,8 +791,8 @@ background-image: linear-gradient(
 .-infobox-wrapper {
     position: absolute;
     z-index: 20;
-    margin-bottom: -4rem;
-    margin-right: -3rem;
+    left: 30%;
+    top: 10%;
     font-size: 3rem;
     color: var(--dark-main-color);
     pointer-events: none;
@@ -745,6 +814,14 @@ background-image: linear-gradient(
     height: max-content;
     margin-top: -1.5rem;
     background-color: var(--dark-main-color);
+}
+
+.-picker-arrow {
+    background-color: var(--main-color);
+}
+
+.-picker-wrapper {
+    background-color: var(--main-color);
 }
 
 

@@ -9,23 +9,23 @@ import './public/modules/bodyProcessor'
 let body = 'Lorem ipsum dolor sit amet'
 
 allNotes = [
-    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true},
-    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title4", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true},
-    {title: "Title5", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title6", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title7", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true},
-    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title7", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
-    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false},
+    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true, alarm: {set: false, time: 0}},
+    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title4", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true, alarm: {set: false, time: 0}},
+    {title: "Title5", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title6", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title7", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: true, alarm: {set: false, time: 0}},
+    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title7", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title1", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title2", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
+    {title: "Title3", body: "Lorem ipsum dolor sit amet", bodyPreview: body, id: idGenerator(), selected: false, date: getCurrentDate(), starred: false, alarm: {set: false, time: 0}},
 ]
 saveAllNotes()
-*/
+/*
 
 
 for (let i in allNotes) {
@@ -38,6 +38,10 @@ document.querySelector('.-main-note-body-textarea').addEventListener('keydown', 
     }
   });
 */
+
+for(let i of allNotes) {
+    i.alarm = {set: false, time: 0}
+}
 
 
 moveStarredToTop()

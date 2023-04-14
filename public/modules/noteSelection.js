@@ -149,7 +149,6 @@ window.renderSelectedNote = () => {
                 return arr;
               }
             dragger.addEventListener('mousedown', function(e) {
-                console.log("INITIATE")
                 clientY = e.clientY
                 cardAt = []
                 for (let el of allNotes) {
@@ -162,7 +161,6 @@ window.renderSelectedNote = () => {
 
             const mouseMoveHandle = (e) => {
                 clientY = e.clientY
-                console.log("HANDLED")
                 for (let i in cardAt) {
                     if (clientY < cardAt[i]) {
                         allNotes = moveArrayElement(allNotes, allNotes.findIndex(el => el.id == selectedNoteId), i)
@@ -178,6 +176,13 @@ window.renderSelectedNote = () => {
                 renderSelectedNote()
                 window.removeEventListener('mousemove', mouseMoveHandle)
                 window.removeEventListener('mouseup', terminateHandle)
+            }
+        } catch (ex) {}
+
+        try {
+            document.querySelector('.-main-note-body-textarea').onscroll = (e) => {
+                let scroll = document.querySelector('.-main-note-body-textarea').scrollTop
+                document.querySelector('.-main-note-virtual').scroll(0, scroll)
             }
         } catch(ex) {}
     }
