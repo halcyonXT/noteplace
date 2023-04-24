@@ -15,12 +15,22 @@ window.replaceEveryOtherColor = (str) => {
     let count = 1;
     return str.replace(regex, (match) => {
       count++;
-      return count % 2 === 0 ? `<span style="font-size:${isNumeric(match.slice(1)) ? `${match.slice(1)}px` : '1rem'}">` : match;
+      if (isNumeric(match.slice(1))) {
+            return count % 2 === 0 ? `<span style="font-size:${isNumeric(match.slice(1)) ? `${match.slice(1)}px` : '1rem'}">` : match;
+      } else return match
     });
   }
 
 window.replaceEveryOther = (str, search, replace) => {
     let count = 0;
+    return str.replace(new RegExp(search, 'g'), (match) => {
+      count++;
+      return count % 2 === 0 ? replace : match;
+    });
+}
+
+window.replaceEveryOtherFromFirst = (str, search, replace) => {
+    let count = 1;
     return str.replace(new RegExp(search, 'g'), (match) => {
       count++;
       return count % 2 === 0 ? replace : match;
