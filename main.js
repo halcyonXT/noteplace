@@ -1,7 +1,8 @@
 
 import './public/styles/main.css'
 import './public/modules/noteSelection'
-import './public/modules/renderNotes'
+import './public/modules/rendering/getNoteElement'
+import './public/modules/rendering/renderNotes'
 import './public/modules/global'
 import './public/modules/resizer'
 import './public/modules/bodyProcessor'

@@ -1,6 +1,5 @@
 
 /* GENERATOR FUNCTIONS */
-
 window.idGenerator = () => Math.trunc(Math.random() * 100000000000000).toString(32)
 window.getCurrentDate = () => {
     const date = new Date();
@@ -11,7 +10,6 @@ window.getCurrentDate = () => {
     const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes} ${day}/${month}/${year}`;
 }
-
 /*************/
 
 
@@ -52,7 +50,8 @@ window.sampleNote = (id) => ({
     id: id, 
     selected: false, 
     date: getCurrentDate(), 
-    starred: false
+    starred: false,
+    alarm: {set: false, time: 0}
 })
 window.allNotes = JSON.parse(localStorage.getItem("allNotes")) || [{title: "Welcome", body: "Welcome to Noteplace. Start by creating a note", id: idGenerator()}]
 window.selectedNoteId = ''
@@ -277,7 +276,7 @@ window.processVirtualDisplay = (value) => {
         document.querySelector('.-main-note-virtual').innerHTML = ''
         let style = getComputedStyle(document.body)
         let color = style.getPropertyValue('--accent-color')
-        let maincolor = style.getPropertyValue('--main-color')
+        let textcolor = style.getPropertyValue('--submain-color')
         //processing of value
         const replaceEveryOtherClr = (str) => {
             const regex = new RegExp(`(⎊.{6})`, 'g');
@@ -301,27 +300,29 @@ window.processVirtualDisplay = (value) => {
             let count = 1;
             return str.replace(regex, (match) => {
                 count++;
-                return count % 2 === 0 ? colSpan + match + endSpan : match;
+                if (isNumeric(match.slice(1))) {
+                    return count % 2 === 0 ? colSpan + match + endSpan : match;
+                } else return count % 2 === 0 ? colSpan + match[0] + endSpan + match.slice(1) : match;
             });
         }
     
         let string = value;
 
         //add strikethrough
-        string = replaceEveryOther(string, '\\-\\-', invSpan + '--' + endSpan);
-        string = string.replaceAll('--', colSpan + '--' + endSpan)
+        string = replaceEveryOtherFromFirst(string, '\\-\\-', colSpan + '--' + endSpan + `<span style="background-color:${color}10;border-radius:0.3rem;color:transparent;">`)
+        string = replaceEveryOther(string, '\\-\\-', `</span>` + invSpan + '--' + endSpan);
     
         //add bold
-        string = replaceEveryOther(string, '\\*\\*', invSpan + '**' + endSpan);
-        string = string.replaceAll('**', colSpan + '**' + endSpan)
+        string = replaceEveryOtherFromFirst(string, '\\*\\*', colSpan + '**' + endSpan + `<span style="background-color:${color}10;border-radius:0.3rem;color:transparent;">`)
+        string = replaceEveryOther(string, '\\*\\*', `</span>` + invSpan + '**' + endSpan);
     
         //add italic
-        string = replaceEveryOther(string, '\\^\\^', invSpan + '^^' + endSpan);
-        string = string.replaceAll('^^', colSpan + '^^' + endSpan)
+        string = replaceEveryOtherFromFirst(string,'\\^\\^', colSpan + '^^' + endSpan + `<span style="background-color:${color}10;border-radius:0.3rem;color:transparent;">`)
+        string = replaceEveryOther(string, '\\^\\^', `</span>` + invSpan + '^^' + endSpan);
     
         //add underline
-        string = replaceEveryOther(string, '\\_\\_', invSpan + '__' + endSpan);
-        string = string.replaceAll('__', colSpan + '__' + endSpan)
+        string = replaceEveryOtherFromFirst(string,'\\_\\_', colSpan + '__' + endSpan + `<span style="background-color:${color}10;border-radius:0.3rem;color:transparent;">`)
+        string = replaceEveryOther(string, '\\_\\_', `</span>` + invSpan + '__' + endSpan);
     
         //add colors
         //string = string.replaceAll('⎊', colSpan + '⎊' + endSpan)

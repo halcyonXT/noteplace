@@ -147,15 +147,20 @@ window.renderSelectedNote = () => {
                 arr.splice(fromIndex, 1);
                 arr.splice(toIndex, 0, element);
                 return arr;
-              }
-            dragger.addEventListener('mousedown', function(e) {
-                clientY = e.clientY
-                cardAt = []
+            }
+            function getNotePositions() {
                 for (let el of allNotes) {
                     let rect = document.querySelectorAll(`[data-noteid='${el.id}']`)[0].getBoundingClientRect()
                     cardAt.push((rect.top + rect.bottom) / 2)
                 }
+            } 
+
+            dragger.addEventListener('mousedown', function(e) {
+                clientY = e.clientY
+                cardAt = []
+                getNotePositions()
                 window.addEventListener('mousemove', mouseMoveHandle)
+                document.querySelector('.-main-sidebar-notes').addEventListener('scroll', getNotePositions)
                 window.addEventListener('mouseup', terminateHandle)
             })
 
@@ -175,6 +180,7 @@ window.renderSelectedNote = () => {
                 saveAllNotes()
                 renderSelectedNote()
                 window.removeEventListener('mousemove', mouseMoveHandle)
+                document.querySelector('.-main-sidebar-notes').removeEventListener('scroll', getNotePositions)
                 window.removeEventListener('mouseup', terminateHandle)
             }
         } catch (ex) {}
